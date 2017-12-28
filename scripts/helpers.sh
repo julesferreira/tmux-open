@@ -40,7 +40,13 @@ stored_engine_vars() {
 
 get_engine() {
 	local engine_var="$1"
-	tmux show-options -g | grep -i "^@open-$engine_var" | cut -d ' ' -f2 | xargs
+	local default_engine="https://www.google.com/search?q="
+	local engine=$(tmux show-options -g | grep -i "^@open-$engine_var" | cut -d ' ' -f2 | xargs)
+	if [ -z "$engine" ]; then
+		echo "$default_engine"
+	else
+		echo "$engine"
+	fi
 }
 
 tmux_version="$(tmux -V | cut -d ' ' -f 2)"
